@@ -85,6 +85,7 @@ function Job({ job }: { job?: JobOutput }) {
                       multiline
                       disabled
                     />
+                    <TextField label="Ref" defaultValue={job.ref} disabled />
                   </Box>
                 </CardContent>
               </Card>
