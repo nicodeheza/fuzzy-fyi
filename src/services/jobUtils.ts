@@ -1,6 +1,7 @@
 import { LabelProps } from "@components/Label";
 import { Job, JobStatus, Project } from "@prisma/client";
-import { intervalToDuration } from "date-fns";
+import { intervalToDuration, formatDuration } from "date-fns";
+
 import * as s3 from "@services/s3";
 import { config } from "@config";
 
@@ -28,13 +29,7 @@ export async function getJobWithSignedUrls(
   }
 }
 
-export function formatTimeElapsed(job: Job): string {
-  const end =
-    job.status.startsWith("FINISHED") || job.status === "STOPPED"
-      ? new Date(job.updatedAt)
-      : new Date();
-  const start = new Date(job.createdAt);
-  const ms = end.getTime() - start.getTime();
+function msToHHMMSS(ms: number): string {
   const duration = intervalToDuration({ start: 0, end: ms });
 
   const zeroPad = (num: number | undefined) => String(num).padStart(2, "0");
@@ -48,6 +43,17 @@ export function formatTimeElapsed(job: Job): string {
     .join("");
 
   return formatted;
+}
+
+export function formatTimeElapsed(job: Job): string {
+  const end =
+    job.status.startsWith("FINISHED") || job.status === "STOPPED"
+      ? new Date(job.updatedAt)
+      : new Date();
+  const start = new Date(job.createdAt);
+  const ms = end.getTime() - start.getTime();
+
+  return msToHHMMSS(ms);
 }
 
 export function getEC2Cost(job: Job): string {
@@ -65,6 +71,27 @@ export function getEC2Cost(job: Job): string {
   const totalCostRoundUp = +(Math.ceil(Number(`${totalCost}e+2`)) + "e-2");
 
   return `$${totalCostRoundUp}`;
+}
+
+export function getETA(job: Job): string {
+  // [2023-08-16 18:39:05.87] [status] tests: 7/12, fuzzing: 16367/1000000, values: [], cov: 56854, corpus: 23
+  if (
+    job.status !== "RUNNING" ||
+    !job.tail ||
+    job.tail.match(/fuzzing: (\d+)\/(\d+)/) === null
+  ) {
+    return "N/A";
+  }
+  const fuzzing = job.tail.match(/fuzzing: (\d+)\/(\d+)/);
+  const percent = Number(fuzzing![1]) / Number(fuzzing![2]);
+  const start = new Date(job.createdAt);
+  const end = new Date();
+  end.setMilliseconds(
+    end.getMilliseconds() + (end.getTime() - start.getTime()) * (1 / percent)
+  );
+  const ms = end.getTime() - start.getTime();
+
+  return formatDuration(intervalToDuration({start:0, end: ms}));
 }
 
 export const color: Record<JobStatus, LabelProps["color"]> = {

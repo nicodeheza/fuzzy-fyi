@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 
 import Box from "@mui/material/Box";
-import { formatTimeElapsed, label } from "@services/jobUtils";
+import { formatTimeElapsed, getETA, label } from "@services/jobUtils";
 import { JobOutput } from "@contexts/JobsContext";
 
 const style = `
@@ -86,6 +86,11 @@ function Job({ job }: { job?: JobOutput }) {
                       disabled
                     />
                     <TextField label="Ref" defaultValue={job.ref} disabled />
+                    <TextField
+                      label="ETA"
+                      defaultValue={getETA(job)}
+                      disabled
+                    />
                   </Box>
                 </CardContent>
               </Card>
