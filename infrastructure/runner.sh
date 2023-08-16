@@ -24,9 +24,8 @@ S3_BUCKET=$(echo $JOB | jq --raw-output '.aws.s3.bucket')
 echo "[$(date)] Clone project"
 PROJECT_GIT_URL=$(echo $JOB | jq --raw-output '.project.url')
 JOB_REF=$(echo $JOB | jq --raw-output '.ref')
-git clone "$PROJECT_GIT_URL"
+git clone -b "$JOB_REF" --single-branch "$PROJECT_GIT_URL"
 cd "$(basename "$PROJECT_GIT_URL" .git)"
-git checkout "$JOB_REF"
 
 if [ "$TEMPLATE_ID" != "undefined" ]; then
   echo "[$(date)] Load template output from S3"
