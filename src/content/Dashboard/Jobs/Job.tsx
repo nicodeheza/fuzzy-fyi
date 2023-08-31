@@ -138,7 +138,7 @@ function Job({ job }: { job?: JobOutput }) {
                       <div>
                         <div
                           dangerouslySetInnerHTML={{
-                            __html: `<pre>${job.logs}</pre>`,
+                            __html: `<pre style="text-wrap:inherit;">${job.logs}</pre>`,
                           }}
                         />
                       </div>
