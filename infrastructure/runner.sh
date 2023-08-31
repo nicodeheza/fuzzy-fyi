@@ -10,7 +10,6 @@ INSTANCE_ID=$(wget -q -O - http://instance-data/latest/meta-data/instance-id)
 BACKEND_URL="https://app.fuzzy.fyi"
 OUTPUT_URL="https://assets.fuzzy.fyi"
 WORKDIR=/home/ubuntu
-ECHIDNA_DIRECTORY=echidna
 
 echo "[$(date)] Go to working directory"
 cd $WORKDIR
@@ -58,6 +57,7 @@ echo "[$(date)] Copy output to S3"
 aws s3 cp --content-type "text/plain;charset=UTF-8" logs.txt s3://$S3_BUCKET/job/$JOB_ID/
 aws s3 cp --content-type "text/plain;charset=UTF-8" /var/log/cloud-init-output.log s3://$S3_BUCKET/job/$JOB_ID/
 LOGS_URL="$OUTPUT_URL/job/$JOB_ID/logs.txt"
+ECHIDNA_DIRECTORY=$(find echidna* -type d -d 0 | head -1)
 aws s3 sync $ECHIDNA_DIRECTORY/ s3://$S3_BUCKET/template/$TEMPLATE_ID/$ECHIDNA_DIRECTORY/
 HTML=$(find $ECHIDNA_DIRECTORY -name '*.html' | tail -n1)
 COVERAGE_URL=""
