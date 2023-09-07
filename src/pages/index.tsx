@@ -3,12 +3,14 @@ import {ThemeSupa} from '@supabase/auth-ui-shared'
 import {useSession, useSupabaseClient} from '@supabase/auth-helpers-react'
 import {useRouter} from 'next/router'
 import {useEffect, useState} from 'react'
+import useUser from '@hooks/useUser'
 
 const Home = () => {
 	const router = useRouter()
 	const session = useSession()
 	const supabase = useSupabaseClient()
 	const [display, setDisplay] = useState('none')
+	const {getUser, isLoading} = useUser()
 
 	useEffect(() => {
 		let ts = setTimeout(() => setDisplay(''))
@@ -16,8 +18,21 @@ const Home = () => {
 		return () => clearTimeout(ts)
 	}, [])
 
+	useEffect(() => {
+		if (session) {
+			getUser(session.user.id)
+				.then((data) => {
+					console.log(data)
+				})
+				.catch((e) => {
+					router.push('/account/create')
+				})
+		}
+	}, [session, getUser, router])
+
 	if (session) {
-		router.push('/dashboard/jobs')
+		console.log(session)
+		// router.push('/dashboard/jobs')
 	}
 
 	return (
