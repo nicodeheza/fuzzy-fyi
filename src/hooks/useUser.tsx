@@ -1,7 +1,10 @@
+import {User} from '@prisma/client'
 import {supabase} from '@services/supabase'
 import {useState} from 'react'
 
-function useGetUser() {
+type NewUser = Omit<User, 'id' | 'createdAt' | 'updatedAt'>
+
+function useUser() {
 	const [isLoading, setIsLoading] = useState(false)
 
 	const getUser = async (userId: string) => {
@@ -12,15 +15,24 @@ function useGetUser() {
 			.eq('id', userId)
 			.single()
 
+		setIsLoading(false)
 		if (error) throw error
 
 		return data
 	}
 
+	const createUser = async (newUser: NewUser) => {
+		setIsLoading(true)
+		const {error} = await supabase.from('users').insert(newUser)
+		setIsLoading(false)
+		if (error) throw error
+	}
+
 	return {
 		isLoading,
-		getUser
+		getUser,
+		createUser
 	}
 }
 
-export default useGetUser
+export default useUser
