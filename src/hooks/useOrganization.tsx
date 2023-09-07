@@ -9,9 +9,10 @@ function useOrganization() {
 
 	const createOrganization = async (organization: NewOrganization) => {
 		setIsLoading(true)
-		const {error} = await supabase.from('organizations').insert(organization)
+		const {error, data} = await supabase.from('organizations').insert(organization)
 		setIsLoading(false)
 		if (error) throw error
+		return data
 	}
 
 	return {

@@ -23,16 +23,18 @@ function useUser() {
 
 	const createUser = async (newUser: NewUser) => {
 		setIsLoading(true)
-		const {error} = await supabase.from('users').insert(newUser)
+		const {error, data} = await supabase.from('users').insert(newUser)
 		setIsLoading(false)
 		if (error) throw error
+		return data
 	}
 
 	const updateUser = async (authId: string, user: Partial<User>) => {
 		setIsLoading(true)
-		const {error} = await supabase.from('users').update(user).eq('authId', authId)
+		const {error, data} = await supabase.from('users').update(user).eq('authId', authId)
 		setIsLoading(false)
 		if (error) throw error
+		return data
 	}
 
 	return {
