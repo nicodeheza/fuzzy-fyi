@@ -28,10 +28,18 @@ function useUser() {
 		if (error) throw error
 	}
 
+	const updateUser = async (authId: string, user: Partial<User>) => {
+		setIsLoading(true)
+		const {error} = await supabase.from('users').update(user).eq('authId', authId)
+		setIsLoading(false)
+		if (error) throw error
+	}
+
 	return {
 		isLoading,
 		getUser,
-		createUser
+		createUser,
+		updateUser
 	}
 }
 
