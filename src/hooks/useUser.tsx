@@ -1,25 +1,24 @@
 import {supabase} from '@services/supabase'
-import {useState} from 'react'
+import {useCallback, useState} from 'react'
 
 function useUser() {
 	const [isLoading, setIsLoading] = useState(false)
 
-	// check this
-	const getUser = async (userId: string) => {
+	const getUser = useCallback(async (authId: string) => {
 		setIsLoading(true)
 		const {data, error} = await supabase
-			.from('users')
-			.select('organization')
-			.eq('id', userId)
+			.from('User')
+			.select('organizationId')
+			.eq('authId', authId)
 			.single()
 
 		setIsLoading(false)
 		if (error) throw error
 
 		return data
-	}
+	}, [])
 
-	const crateAccount = async (organizationName: string) => {
+	const crateAccount = useCallback(async (organizationName: string) => {
 		setIsLoading(true)
 		const {
 			data: {session}
@@ -43,7 +42,7 @@ function useUser() {
 			setIsLoading(false)
 			throw error
 		}
-	}
+	}, [])
 
 	return {
 		isLoading,

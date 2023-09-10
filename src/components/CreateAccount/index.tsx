@@ -1,24 +1,21 @@
 import Loading from '@components/Loading'
-import {ApiKey} from '@components/createAccount/ApiKey'
-import {OrganizationForm} from '@components/createAccount/OrganizationFrom'
+import {ApiKey} from '@components/CreateAccount/ApiKey'
+import {OrganizationForm} from '@components/CreateAccount/OrganizationFrom'
 import useUser from '@hooks/useUser'
 import {useRouter} from 'next/router'
-import {useState} from 'react'
+import {FC, useState} from 'react'
 
-// move this to index
-const CreateAccount = () => {
+interface Prop {
+	next: () => void
+}
+
+const CreateAccount: FC<Prop> = ({next}) => {
 	const [apiKey, setApiKey] = useState('')
 	const {crateAccount, isLoading} = useUser()
-
-	const router = useRouter()
 
 	const create = (name: string) => {
 		if (!name) return
 		crateAccount(name).then(setApiKey).catch(console.error)
-	}
-
-	const next = () => {
-		router.push('/dashboard/projects')
 	}
 
 	if (isLoading) return <Loading />

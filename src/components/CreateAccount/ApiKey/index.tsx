@@ -18,21 +18,34 @@ export const ApiKey: FC<Prop> = ({apiKey, next}) => {
 				flexDirection: 'column',
 				justifyContent: 'center',
 				alignItems: 'center',
-				gap: '30px'
+				gap: '30px',
+				width: 'fit-content',
+				maxWidth: '90vw'
 			}}
 		>
-			<h1 style={{margin: 0}}>This is your API key, keep it in a safe place.</h1>
+			<h1 style={{margin: 0, fontSize: '20px'}}>
+				This is your API key, keep it in a safe place.
+			</h1>
 			<Card
 				sx={{
-					width: 'fit-content',
+					width: '100%',
 					display: 'flex',
 					gap: '20px',
 					height: '35px',
-					justifyContent: 'center',
+					justifyContent: 'space-between',
 					alignItems: 'center'
 				}}
 			>
-				<p style={{paddingLeft: '20px'}}>{apiKey}</p>
+				<p
+					style={{
+						paddingLeft: '20px',
+						width: '90%',
+						textOverflow: 'ellipsis',
+						overflow: 'hidden'
+					}}
+				>
+					{apiKey}
+				</p>
 				<Button
 					variant="contained"
 					color="secondary"
