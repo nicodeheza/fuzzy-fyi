@@ -13,8 +13,32 @@ model Organization {
   apiKey    String
   users     User[]
   projects  Project[]
+  subscription SubscriptionStatus
+  billingEmail String
+  invoices invoice[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now()) @updatedAt
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  NACTIVE
+}
+
+model invoice{
+  id String @id @default(uuid())
+  status InvoiceStatus
+  pdf String
+  organization Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
+}
+
+enum InvoiceStatus {
+  PENDING
+  PAID
+  OVERDUE
 }
 
 model User {
