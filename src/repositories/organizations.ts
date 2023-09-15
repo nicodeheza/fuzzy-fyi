@@ -8,3 +8,11 @@ export const createOrganization = (newOrganization: NewOrganization) => {
 		data: newOrganization
 	})
 }
+
+export const getActiveOrganizations = () => {
+	return prisma.organization.findMany({
+		where: {
+			subscription: 'ACTIVE'
+		}
+	})
+}
