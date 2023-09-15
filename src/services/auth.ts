@@ -3,6 +3,7 @@ import prisma from './prisma'
 import {NextApiRequest} from 'next'
 import {supabase} from './supabase'
 import {Organization} from '@prisma/client'
+import {config} from '@config'
 
 export default function create(): string {
 	return crypto.randomBytes(32).toString('hex')
@@ -45,6 +46,13 @@ export async function authUser(request: NextApiRequest) {
 		} = await supabase.auth.getUser(accessToken)
 		return user
 	} else {
+		throw new Error('Unauthorized')
+	}
+}
+
+export async function authCronJob(request: NextApiRequest) {
+	const apiKey = request.headers['x-api-key'] as string | undefined
+	if (!apiKey || apiKey !== config.cronJob.apiKey) {
 		throw new Error('Unauthorized')
 	}
 }
