@@ -13,8 +13,8 @@ model Organization {
   apiKey    String
   users     User[]
   projects  Project[]
-  subscription SubscriptionStatus
-  billingEmail String
+  subscription SubscriptionStatus @default(INACTIVE)
+  billingEmail String?
   invoices invoice[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now()) @updatedAt
@@ -22,7 +22,7 @@ model Organization {
 
 enum SubscriptionStatus {
   ACTIVE
-  NACTIVE
+  INACTIVE
 }
 
 model invoice{
