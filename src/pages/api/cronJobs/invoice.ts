@@ -1,7 +1,7 @@
 import {createInvoice} from '@repositories/invoice'
 import {getActiveOrganizations} from '@repositories/organizations'
 import {authCronJob} from '@services/auth'
-import {generateInvoice} from '@services/invoice'
+import {sendInvoice} from '@services/sendgrid'
 import {NextApiRequest, NextApiResponse} from 'next'
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -16,18 +16,20 @@ async function POST(request: NextApiRequest, response: NextApiResponse) {
 
 	const organizations = await getActiveOrganizations()
 
-	const invoiceRecords = await Promise.all(organizations.map(({id}) => createInvoice(id)))
-
-	const invoices = Promise.all(
-		organizations.map((organization, i) => {
-			const id = invoiceRecords[i].id
-			const {billingEmail, name} = organization
-			return generateInvoice(id, {billingEmail: billingEmail || '', name})
-		})
+	const invoiceRecords = await Promise.all(
+		organizations.map((organization) => createInvoice(organization.id))
 	)
 
-	// test this.
-	console.log(invoices)
+	await Promise.allSettled(
+		organizations.map((organization, i) =>
+			sendInvoice({
+				email: organization.billingEmail || '',
+				organizationName: organization.name,
+				date: new Date().toISOString(),
+				invoiceId: invoiceRecords[i].id
+			})
+		)
+	)
 
-	response.status(200)
+	response.status(200).end()
 }
