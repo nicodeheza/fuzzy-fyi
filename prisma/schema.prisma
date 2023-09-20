@@ -28,7 +28,6 @@ enum SubscriptionStatus {
 model invoice{
   id String @id @default(uuid())
   status InvoiceStatus
-  pdf String
   organization Organization @relation(fields: [organizationId], references: [id])
   organizationId String
   createdAt DateTime  @default(now())
