@@ -25,7 +25,7 @@ async function POST(request: NextApiRequest, response: NextApiResponse) {
 			sendInvoice({
 				email: organization.billingEmail || '',
 				organizationName: organization.name,
-				date: new Date().toISOString(),
+				date: invoiceRecords[i].createdAt.toLocaleDateString('en-us'),
 				invoiceId: invoiceRecords[i].id
 			})
 		)
