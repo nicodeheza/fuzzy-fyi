@@ -2021,6 +2021,13 @@
   resolved "https://registry.yarnpkg.com/@types/parse-json/-/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
   integrity sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==
 
+"@types/pdfkit@^0.12.11":
+  version "0.12.11"
+  resolved "https://registry.yarnpkg.com/@types/pdfkit/-/pdfkit-0.12.11.tgz#699147a1879666901b7666d8840b56eea7796c79"
+  integrity sha512-G2icKwo5i/jAYCHc6SfyEQRFel5wE0GICu+vUbHLh7pxN/fv/p2rQmnNAJ+qfFSGF5bpzrPDnLrhGYHLqRo1wg==
+  dependencies:
+    "@types/node" "*"
+
 "@types/phoenix@^1.5.4":
   version "1.5.5"
   resolved "https://registry.yarnpkg.com/@types/phoenix/-/phoenix-1.5.5.tgz#2276102b16203ca16a5ec3f2e20bcc2819a8a520"

@@ -46,5 +46,8 @@
     "swr": "^2.1.1",
     "tslog": "^4.8.2",
     "typescript": "5.0.2"
+  },
+  "devDependencies": {
+    "@types/pdfkit": "^0.12.11"
   }
 }
