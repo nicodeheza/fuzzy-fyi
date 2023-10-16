@@ -1,7 +1,10 @@
 import {Organization} from '@prisma/client'
 import prisma from '@services/prisma'
 
-type NewOrganization = Omit<Organization, 'id' | 'createdAt' | 'updatedAt'>
+type NewOrganization = Omit<
+	Organization,
+	'id' | 'createdAt' | 'updatedAt' | 'billingEmail' | 'subscription'
+>
 
 export const createOrganization = (newOrganization: NewOrganization) => {
 	return prisma.organization.create({
