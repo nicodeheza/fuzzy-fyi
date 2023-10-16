@@ -1,11 +1,15 @@
 import {CircularProgress} from '@mui/material'
-import React from 'react'
+import React, {FC} from 'react'
 
-const Loading = () => (
+interface Props {
+	fullScreen?: boolean
+}
+
+const Loading: FC<Props> = ({fullScreen = true}) => (
 	<div
 		style={{
-			width: '100vw',
-			height: '100vh',
+			width: fullScreen ? '100vw' : '100%',
+			height: fullScreen ? '100vh' : '100%',
 			display: 'flex',
 			alignItems: 'center',
 			justifyContent: 'center'

@@ -17,3 +17,12 @@ export const updateUserByAuthId = (authId: string, user: Partial<EditUser>) => {
 		data: user
 	})
 }
+
+export const getUserByAuthId = (authId: string) => {
+	return prisma.user.findFirst({
+		where: {authId},
+		include: {
+			organization: true
+		}
+	})
+}

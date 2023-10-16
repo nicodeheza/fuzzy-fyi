@@ -16,6 +16,7 @@ model Organization {
   subscription SubscriptionStatus @default(INACTIVE)
   billingEmail String?
   invoices Invoice[]
+  stripeId String?
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now()) @updatedAt
 }

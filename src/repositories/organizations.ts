@@ -19,3 +19,10 @@ export const getActiveOrganizations = () => {
 		}
 	})
 }
+
+export const updateById = (id: string, updates: Partial<Organization>) => {
+	return prisma.organization.update({
+		where: {id},
+		data: {...updates}
+	})
+}

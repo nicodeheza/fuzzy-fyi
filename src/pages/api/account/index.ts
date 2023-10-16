@@ -1,11 +1,12 @@
 import {createOrganization} from '@repositories/organizations'
-import {createUser} from '@repositories/users'
+import {createUser, getUserByAuthId} from '@repositories/users'
 import create, {authUser} from '@services/auth'
 import {NextApiRequest, NextApiResponse} from 'next'
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
 	const handlers: Record<string, any> = {
-		POST
+		POST,
+		GET
 	}
 	return handlers[req.method as string](req, res)
 }
@@ -26,4 +27,13 @@ async function POST(request: NextApiRequest, response: NextApiResponse) {
 	})
 
 	response.status(200).json({apiKey})
+}
+
+async function GET(request: NextApiRequest, response: NextApiResponse) {
+	const sessionUser = await authUser(request)
+	if (!sessionUser) return response.status(401)
+
+	const userData = await getUserByAuthId(sessionUser.id)
+
+	response.status(200).json(userData)
 }
