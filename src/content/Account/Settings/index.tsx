@@ -11,7 +11,7 @@ import usePay from '@hooks/usePay'
 
 export default function SettingsComponent() {
 	const {getAccount, isLoading} = useUser()
-	const {setId} = usePay()
+	const {setId, isLoading: payIsLoading} = usePay()
 	const [organization, setOrganization] = useState<Organization>()
 	const [success, setSuccess] = useState<boolean>()
 	const router = useRouter()
@@ -27,13 +27,15 @@ export default function SettingsComponent() {
 		const {success, session_id} = router.query
 		if (success === undefined) return
 		setSuccess(success === 'true')
-		if (success && session_id)
+		if (success && session_id) {
 			setId(session_id as string).then(() => {
+				setOrganization((prev) => prev && {...prev, stripeId: session_id as string})
 				router.replace('/account/settings', undefined, {shallow: true})
 			})
+		}
 	}, [router.query, setId, router])
 
-	if (isLoading) return <Loading fullScreen={false} />
+	if (isLoading || payIsLoading) return <Loading fullScreen={false} />
 	return (
 		<>
 			{success !== undefined && (
@@ -51,7 +53,7 @@ export default function SettingsComponent() {
 					apiKey={organization?.apiKey || ''}
 					subscription={organization?.subscription === 'ACTIVE' ? 'Pro Plan' : 'Inactive'}
 				/>
-				<StripeButton />
+				<StripeButton isSuscribe={!!organization?.stripeId} />
 			</Box>
 		</>
 	)

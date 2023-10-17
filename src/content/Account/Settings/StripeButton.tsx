@@ -2,8 +2,13 @@ import usePay from '@hooks/usePay'
 import {Button, Card, CardContent, CircularProgress, Paper} from '@mui/material'
 import {FC} from 'react'
 
-export const StripeButton: FC = () => {
+interface Props {
+	isSuscribe: boolean
+}
+
+export const StripeButton: FC<Props> = ({isSuscribe}) => {
 	const {checkout, isLoading} = usePay()
+	const label = isSuscribe ? 'Update Payment' : 'Set Payment'
 	return (
 		<Card>
 			<CardContent>
@@ -11,9 +16,10 @@ export const StripeButton: FC = () => {
 				<Button
 					variant="contained"
 					onClick={() => checkout('pro')}
-					sx={{width: '130px', height: '40px'}}
+					sx={{height: '40px', display: 'flex', alignItems: 'center', gap: '10px'}}
 				>
-					{isLoading ? <CircularProgress color="secondary" size={20} /> : 'Set Payment'}
+					{label}
+					{isLoading && <CircularProgress color="secondary" size={20} />}
 				</Button>
 			</CardContent>
 		</Card>

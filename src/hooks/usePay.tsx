@@ -25,6 +25,7 @@ export default function usePay() {
 		setIsLoading(false)
 	}
 	const setId = useCallback(async (session_id: string) => {
+		setIsLoading(true)
 		const {
 			data: {session}
 		} = await supabase.auth.getSession()
@@ -38,6 +39,7 @@ export default function usePay() {
 				authorization: `Bearer ${session.access_token}`
 			}
 		})
+		setIsLoading(false)
 	}, [])
 
 	return {
