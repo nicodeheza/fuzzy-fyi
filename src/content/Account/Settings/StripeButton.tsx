@@ -7,15 +7,20 @@ interface Props {
 }
 
 export const StripeButton: FC<Props> = ({isSuscribe}) => {
-	const {checkout, isLoading} = usePay()
+	const {checkout, portal, isLoading} = usePay()
 	const label = isSuscribe ? 'Update Payment' : 'Set Payment'
+
+	function onClick() {
+		isSuscribe ? portal() : checkout('pro')
+	}
+
 	return (
 		<Card>
 			<CardContent>
 				<h2>Payment settings:</h2>
 				<Button
 					variant="contained"
-					onClick={() => checkout('pro')}
+					onClick={onClick}
 					sx={{height: '40px', display: 'flex', alignItems: 'center', gap: '10px'}}
 				>
 					{label}

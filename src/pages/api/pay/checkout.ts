@@ -3,7 +3,7 @@ import {updateStripeIdByUserAuthId} from '@services/organization'
 import {getCheckoutUrl} from '@services/stripe'
 import {NextApiRequest, NextApiResponse} from 'next'
 
-// todo add portal
+// todo unsubscribe webhook
 // check dependencies
 // check invoice and email
 export default function handler(req: NextApiRequest, res: NextApiResponse) {

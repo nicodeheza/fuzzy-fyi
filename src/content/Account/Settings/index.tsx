@@ -27,7 +27,7 @@ export default function SettingsComponent() {
 		const {success, session_id} = router.query
 		if (success === undefined) return
 		setSuccess(success === 'true')
-		if (success && session_id) {
+		if (success === 'true' && session_id) {
 			setId(session_id as string).then(() => {
 				setOrganization((prev) => prev && {...prev, stripeId: session_id as string})
 				router.replace('/account/settings', undefined, {shallow: true})

@@ -24,6 +24,28 @@ export default function usePay() {
 
 		setIsLoading(false)
 	}
+
+	async function portal() {
+		setIsLoading(true)
+		const {
+			data: {session}
+		} = await supabase.auth.getSession()
+		if (!session) throw new Error('missing session')
+
+		const response = await fetch('/api/pay/portal', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				authorization: `Bearer ${session.access_token}`
+			}
+		})
+
+		const {url} = await response.json()
+		window.location.replace(url)
+
+		setIsLoading(false)
+	}
+
 	const setId = useCallback(async (session_id: string) => {
 		setIsLoading(true)
 		const {
@@ -44,6 +66,7 @@ export default function usePay() {
 
 	return {
 		checkout,
+		portal,
 		setId,
 		isLoading
 	}
