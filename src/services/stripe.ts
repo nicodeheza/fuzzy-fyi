@@ -47,3 +47,11 @@ export async function getPortalUrl(id: string) {
 
 	return portalSession.url
 }
+
+export async function getEvent(
+	payload: string | Buffer,
+	endpointSecret: string,
+	signature: string
+) {
+	return stripe.webhooks.constructEvent(payload, signature, endpointSecret)
+}
