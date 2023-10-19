@@ -1,6 +1,7 @@
 import {getEvent} from '@services/stripe'
 import {NextApiRequest, NextApiResponse} from 'next'
 import {buffer} from 'micro'
+import {updateSubscription} from '@repositories/organizations'
 
 export const config = {
 	api: {
@@ -17,6 +18,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 
 interface SubscriptionData {
 	canceled_at: null | string | number
+	customer: string
 }
 
 async function POST(request: NextApiRequest, response: NextApiResponse) {
@@ -26,15 +28,10 @@ async function POST(request: NextApiRequest, response: NextApiResponse) {
 
 	const event = await getEvent(payload, endpointSecret, signature)
 
-	console.log('>>>>type:', event.type)
-
 	switch (event.type) {
 		case 'customer.subscription.updated':
 			const data = event.data.object as SubscriptionData
-			if (data.canceled_at) {
-				// handle cancel
-				console.log(data.canceled_at)
-			}
+			await updateSubscription(data.customer, data.canceled_at ? 'INACTIVE' : 'ACTIVE')
 			break
 	}
 

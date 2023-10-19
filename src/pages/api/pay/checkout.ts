@@ -1,11 +1,10 @@
 import {authUser} from '@services/auth'
 import {updateStripeIdByUserAuthId} from '@services/organization'
-import {getCheckoutUrl} from '@services/stripe'
+import {getCheckoutUrl, getCostumerId} from '@services/stripe'
 import {NextApiRequest, NextApiResponse} from 'next'
 
-// todo unsubscribe webhook
-// check dependencies
 // check invoice and email
+// check dependencies
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
 	const handlers: Record<string, any> = {
 		POST,
@@ -32,7 +31,9 @@ async function PATCH(request: NextApiRequest, response: NextApiResponse) {
 
 	const {session_id} = request.body
 
-	await updateStripeIdByUserAuthId(sessionUser.id, session_id)
+	const stripeId = await getCostumerId(session_id)
+
+	await updateStripeIdByUserAuthId(sessionUser.id, stripeId)
 
 	response.status(200).end()
 }

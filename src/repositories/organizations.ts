@@ -1,4 +1,4 @@
-import {Organization} from '@prisma/client'
+import {Organization, SubscriptionStatus} from '@prisma/client'
 import prisma from '@services/prisma'
 
 type NewOrganization = Omit<
@@ -24,5 +24,14 @@ export const updateById = (id: string, updates: Partial<Organization>) => {
 	return prisma.organization.update({
 		where: {id},
 		data: {...updates}
+	})
+}
+
+export const updateSubscription = (stripeId: string, status: SubscriptionStatus) => {
+	return prisma.organization.update({
+		where: {stripeId},
+		data: {
+			subscription: status
+		}
 	})
 }

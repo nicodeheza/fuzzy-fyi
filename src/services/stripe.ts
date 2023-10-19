@@ -32,20 +32,22 @@ export async function getPortalUrl(id: string) {
 	const user = await getUserByAuthId(id)
 	if (!user) throw new Error('user not exist')
 
-	const session_id = user.organization.stripeId
-	if (!session_id) throw new Error('not stripe id')
+	const stripeId = user.organization.stripeId
+	if (!stripeId) throw new Error('not stripe id')
 
 	const return_url = `${config.backend.url}/account/settings`
 
-	const checkoutSession = await stripe.checkout.sessions.retrieve(session_id)
-	if (!checkoutSession) throw new Error("can't find checkout session")
-
 	const portalSession = await stripe.billingPortal.sessions.create({
-		customer: checkoutSession.customer as string,
+		customer: stripeId,
 		return_url
 	})
 
 	return portalSession.url
+}
+
+export async function getCostumerId(session_id: string) {
+	const checkoutSession = await stripe.checkout.sessions.retrieve(session_id)
+	return checkoutSession.customer as string
 }
 
 export async function getEvent(
