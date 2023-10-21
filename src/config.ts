@@ -36,13 +36,5 @@ export const config = {
 	supabase: {
 		url: process.env.NEXT_PUBLIC_SUPABASE_URL!,
 		anonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-	},
-	cronJob: {
-		apiKey: process.env.CRON_JOB_API_KEY
-	},
-	sendGrid: {
-		apiKey: process.env.SEND_GRID_API_KEY || '',
-		emailAddress: process.env.SEND_GRID_EMAIL_ADDRESS || '',
-		invoiceTemplateId: process.env.SEND_GRID_INVOICE_TEMPLATE_ID || ''
 	}
 }

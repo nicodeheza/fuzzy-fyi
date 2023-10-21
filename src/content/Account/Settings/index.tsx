@@ -1,6 +1,6 @@
 import Loading from '@components/Loading'
 import useUser from '@hooks/useUser'
-import {Alert, Box, Paper} from '@mui/material'
+import {Box} from '@mui/material'
 import {useEffect, useState} from 'react'
 import OrgData from './OrgData'
 import {Organization} from '@prisma/client'
