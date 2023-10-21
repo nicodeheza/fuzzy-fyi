@@ -3,8 +3,6 @@ import {updateStripeIdByUserAuthId} from '@services/organization'
 import {getCheckoutUrl, getCostumerId} from '@services/stripe'
 import {NextApiRequest, NextApiResponse} from 'next'
 
-// TODO check dependencies
-// TODO final test
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
 	const handlers: Record<string, any> = {
 		POST,
